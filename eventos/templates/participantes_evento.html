@@ -26,7 +26,7 @@
             <div class="col-md">
                 <div class="row">
                     <div class="col-md-2">
-                        <span class="badge rounded-pill text-bg-danger"><a class="link" href="{% url 'participantes_evento' evento.id %}">Participantes</a></span>
+                        <span class="badge rounded-pill text-bg-danger"><a class="link" href="">Participantes</a></span>
                     </div>
                     <div class="col-md-2">
                         <span class="badge rounded-pill text-bg-danger"><a class="link" href="">Certificados</a></span>
@@ -59,7 +59,7 @@
                     </div>
 
                     <div class="col-md ">
-                        <a href="#" class="btn-principal" style="text-decoration: none;">Exportar CSV</a>
+                        <a href="{% url 'gerar_csv' evento.id %}" class="btn-principal" style="text-decoration: none;">Exportar CSV</a>
                     </div>
                 </div>
             </div>
