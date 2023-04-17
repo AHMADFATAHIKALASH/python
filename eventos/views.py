@@ -116,7 +116,7 @@ def gerar_certificado(request, id):
      if not evento.criador == request.user:
         raise Http404('Esse evento não é seu')
      path_template = os.path.join(settings.BASE_DIR, 'templates/static/evento/img/template_certificado.png')
-     path_font = os.path.join(settings.BASE_DIR, 'templates/static/evento/fontes/arimo.ttf')
+     path_fonte = os.path.join(settings.BASE_DIR, 'templates/static/fontes/arimo.ttf')
 
      for participante in evento.participantes.all():
 
@@ -124,8 +124,8 @@ def gerar_certificado(request, id):
           img = Image.open(path_template)
           draw = ImageDraw.Draw(img)
 
-          font_nome = ImageFont.truetype(path_font, 80)
-          font_ifo = ImageFont.truetype(path_font, 30)
+          font_nome = ImageFont.truetype(path_fonte, 60)
+          font_ifo = ImageFont.truetype(path_fonte, 30)
 
 
           draw.text((230, 651), f"{participante.username}", font=font_nome, fill=(0,0,0))
@@ -154,4 +154,15 @@ def gerar_certificado(request, id):
      return redirect(reverse('certificados_evento', kwargs={'id': evento.id}))
 
 
+def procurar_certificado(request, id):
+    evento = get_object_or_404(Evento, id=id)
+    if not evento.criador == request.user:
+        raise Http404('Esse evento não é seu')
+    email = request.POST.get('email')
+    certificado = Certificado.objects.filter(evento=evento).filter(participante__email=email).first()
+    if not certificado:
+        messages.add_message(request, constants.WARNING, 'Certificado não encontrado')
+        return redirect(reverse('certificados_evento', kwargs={'id': evento.id}))
+    
+    return redirect(certificado.certificado.url)
      
